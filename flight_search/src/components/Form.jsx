@@ -7,8 +7,6 @@ const Form = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [data, setData] = useState(null);
 
-  const fetchData = async () => {};
-
   useEffect(() => {
     fetch(raw)
       .then((res) => {
@@ -203,7 +201,9 @@ const Form = () => {
                 <td>Class: {item.class.join(", ")}</td>
 
                 <td>
-                  <button>SELECT</button>
+                  <button className="text-white bg-indigo-900 rounded-none font-bold py-1 px-8">
+                    SELECT
+                  </button>
                 </td>
               </tbody>
             </table>
