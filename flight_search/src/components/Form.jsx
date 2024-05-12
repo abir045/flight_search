@@ -1,9 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+import raw from "../data/LHR_CDG_ADT1_TYPE_1.txt";
 
 const Form = () => {
   const [active, setActive] = useState("active");
   const [startDate, setStartDate] = useState(new Date());
+  const [data, setData] = useState(null);
+
+  const fetchData = async () => {};
+
+  useEffect(() => {
+    fetch(raw)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setData(data);
+      });
+  }, []);
+
+  console.log(raw);
+
   return (
     <div className="flex flex-col ">
       <h1 className="font-bold text-[36px] pl-[17%] border-b">Master Price</h1>
@@ -136,6 +154,63 @@ const Form = () => {
           </button>
         </div>
       </form>
+
+      {data &&
+        data.flightOffer.map((item, key) => (
+          <>
+            <table>
+              <thead>
+                <tr className="">
+                  <th>DURATION</th>
+                  <th>DEPARTURE</th>
+                  <th>ROUTE</th>
+
+                  <th>ARRIVAL</th>
+                  <th>FLIGHT</th>
+                  <th>AIRCRAFT</th>
+                  <th>CLASS</th>
+                  <th>FARE</th>
+
+                  <th>PRICE</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {item.itineraries.map((itinerary) => (
+                  <tr key={itinerary.duration}>
+                    <td> {itinerary.duration}</td>
+                    {itinerary.segments.map((segment, key) => (
+                      <div key={key}>
+                        <td>
+                          {segment.carrierCode} {segment.flightNumber}
+                        </td>
+                        <td>{segment.departure.iataCode}</td>
+                        <td>({segment.departure.at})</td>
+
+                        <td>
+                          {segment.arrival.iataCode} ({segment.arrival.at})
+                        </td>
+                        {/* <td>Marketing Carrier: {segment.marketingCarrier}</td> */}
+
+                        <td>Aircraft: {segment.aircraft}</td>
+                      </div>
+                    ))}
+                  </tr>
+                ))}
+
+                <td key={key}>{item.price}</td>
+                <td>Fare : {item.fareBasis.join(", ")}</td>
+                <td>Class: {item.class.join(", ")}</td>
+
+                <td>
+                  <button>SELECT</button>
+                </td>
+              </tbody>
+            </table>
+          </>
+        ))}
+
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 };
