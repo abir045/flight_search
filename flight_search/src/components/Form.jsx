@@ -181,14 +181,14 @@ const Form = () => {
                     <td> {itinerary.duration}</td>
                     {itinerary.segments.map((segment, key) => (
                       <div key={key}>
-                        <td>
-                          {segment.carrierCode} {segment.flightNumber}
-                        </td>
                         <td>{segment.departure.iataCode}</td>
                         <td>({segment.departure.at})</td>
 
                         <td>
                           {segment.arrival.iataCode} ({segment.arrival.at})
+                        </td>
+                        <td>
+                          {segment.carrierCode} {segment.flightNumber}
                         </td>
                         {/* <td>Marketing Carrier: {segment.marketingCarrier}</td> */}
 
